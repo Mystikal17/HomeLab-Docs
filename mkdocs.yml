@@ -17,5 +17,6 @@ nav:
   - Network:
       - Overview: network/overview.md
   - Infrastructure:
+      - Hardware Inventory: infra/hardware.md
       - Proxmox: infra/proxmox.md
       - OPNsense: infra/opnsense.md
