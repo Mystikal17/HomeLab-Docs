@@ -1,0 +1,21 @@
+site_name: Frank's Homelab
+site_url: https://Mystikal17.github.io/homelab-docs/
+
+theme:
+  name: material
+  palette:
+    scheme: slate        # dark mode by default
+    primary: indigo
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Network:
+      - Overview: network/overview.md
+  - Infrastructure:
+      - Proxmox: infra/proxmox.md
+      - OPNsense: infra/opnsense.md
