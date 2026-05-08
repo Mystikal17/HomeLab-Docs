@@ -4,14 +4,17 @@ site_url: https://Mystikal17.github.io/homelab-docs/
 theme:
   name: material
   palette:
-    scheme: slate        # dark mode by default
+    scheme: slate
     primary: indigo
   features:
     - navigation.tabs
     - navigation.sections
     - search.highlight
     - content.code.copy
-
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+    
 nav:
   - Home: index.md
   - Network:
@@ -20,3 +23,9 @@ nav:
       - Hardware Inventory: infra/hardware.md
       - Proxmox: infra/proxmox.md
       - OPNsense: infra/opnsense.md
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.superfences
