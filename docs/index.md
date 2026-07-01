@@ -1,73 +1,24 @@
----
-hide:
-  - navigation
-  - toc
----
-
 # Frank's Homelab
 
-A self-hosted homelab built on enterprise-grade hardware — documenting the setup, 
-configuration, and lessons learned along the way.
+Welcome to the documentation for **mystikal.dev** — a production-grade homelab built for learning and portfolio development.
 
----
+## Infrastructure
 
-## Infrastructure at a Glance
+- **Firewall:** OPNsense on Lenovo ThinkCentre M720q (Intel i350-T4)
+- **Switching:** Ubiquiti USW-24 PoE+ + USW-48 Standard
+- **Wireless:** 2x Ubiquiti U6+ APs
+- **Compute:** Proxmox cluster (4x Dell OptiPlex nodes) + UGREEN NAS
 
-<div class="grid cards" markdown>
+## Active Services
 
--   :material-router: **Routing & Firewall**
+| Service | URL |
+|---|---|
+| Password Manager | [vault.mystikal.dev](https://vault.mystikal.dev) |
+| Dashboard | [home.mystikal.dev](https://home.mystikal.dev) |
+| Monitoring | [monitor.mystikal.dev](https://monitor.mystikal.dev) |
+| Proxmox | [proxmox.mystikal.dev](https://proxmox.mystikal.dev) |
+| UniFi | [unifi.mystikal.dev](https://unifi.mystikal.dev) |
 
-    OPNsense running on a Lenovo ThinkCentre M720q with an Intel i350-T4 quad-port NIC.
+## Goals
 
-    [:octicons-arrow-right-24: OPNsense](infra/opnsense.md)
-
--   :material-server-network: **Proxmox Cluster**
-
-    Three node cluster running on Dell Optiplex Micro PCs with a combined 72GB of RAM.
-
-    [:octicons-arrow-right-24: Proxmox](infra/proxmox.md)
-
--   :material-switch: **Switching**
-
-    Ubiquiti USW-24 PoE+ and USW-48 managing all wired connections.
-
-    [:octicons-arrow-right-24: Network](network/overview.md)
-
--   :material-wifi: **Wireless**
-
-    Two Ubiquiti U6+ access points providing full floor coverage.
-
-    [:octicons-arrow-right-24: Network](network/overview.md)
-
--   :material-lightning-bolt: **Power**
-
-    APC 1500VA UPS protecting all critical infrastructure.
-
-    [:octicons-arrow-right-24: Hardware](infra/hardware.md)
-
--   :material-nas: **Storage**
-
-    UGREEN NAS planned for centralized storage and backup.
-
-    [:octicons-arrow-right-24: Hardware](infra/hardware.md)
-
-</div>
-
----
-
-## Hardware Summary
-
-| Device | Role | 
-|--------|------|
-| Lenovo ThinkCentre M720q | OPNsense Router/Firewall |
-| Dell Optiplex 3060 Micro x3 | Proxmox Cluster Nodes |
-| Dell Optiplex 7010 Micro | Proxmox Cluster Node |
-| Ubiquiti USW-24 PoE+ | Primary Switch |
-| Ubiquiti USW-48 | Secondary Switch |
-| Ubiquiti U6+ x2 | Wireless Access Points |
-| APC 1500VA | UPS |
-
----
-
-!!! note "Work in Progress"
-    This documentation is actively being built out as the homelab evolves.
+Building toward a **Security Architect** role with a cloud security focus. Every decision in this lab is made with production-grade standards and documented for the portfolio.

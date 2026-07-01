@@ -1,5 +1,5 @@
 site_name: Frank's Homelab
-site_url: https://Mystikal17.github.io/homelab-docs/
+site_url: https://mystikal17.github.io/HomeLab-Docs/
 
 theme:
   name: material
@@ -9,26 +9,45 @@ theme:
   features:
     - navigation.tabs
     - navigation.sections
+    - navigation.top
     - search.highlight
     - content.code.copy
     - content.tabs.link
-  icon:
-    repo: fontawesome/brands/github
-
-nav:
-  - Home: index.md
-  - Network:
-      - Overview: network/overview.md
-  - Infrastructure:
-      - Hardware Inventory: infra/hardware.md
-      - Proxmox: infra/proxmox.md
-      - OPNsense: infra/opnsense.md
 
 markdown_extensions:
   - attr_list
   - md_in_html
   - admonition
   - pymdownx.superfences
+  - pymdownx.details
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Network:
+      - VLAN Architecture: network/vlans.md
+      - OPNsense: network/opnsense.md
+      - Dynamic DNS: network/ddns.md
+      - Printer VLAN: network/printer.md
+  - Infrastructure:
+      - Hardware Inventory: infra/hardware.md
+      - Proxmox Setup: infra/proxmox.md
+  - Services:
+      - Overview: services/overview.md
+      - Vaultwarden: services/vaultwarden.md
+      - Homepage Dashboard: services/homepage.md
+      - Uptime Kuma: services/monitoring.md
+      - Subdomains & Reverse Proxy: services/subdomains.md
+      - Domain & SSL: services/domain-ssl.md
+  - Security:
+      - WAN Hardening: security/wan-hardening.md
+      - Homelab Hardening (2FA + Tokens): security/hardening-2fa.md
+  - VPN:
+      - WireGuard Overview: vpn/wireguard.md
+      - MacBook Peer: vpn/macbook.md
+  - Session Logs:
+      - All Sessions: session-logs/index.md
+  - Meta:
+      - About this site: meta/site.md
