@@ -13,6 +13,8 @@ theme:
     - search.highlight
     - content.code.copy
     - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
 
 markdown_extensions:
   - attr_list
@@ -39,6 +41,7 @@ nav:
       - Vaultwarden: services/vaultwarden.md
       - Homepage Dashboard: services/homepage.md
       - Uptime Kuma: services/monitoring.md
+      - Wazuh SIEM: services/wazuh.md
       - Subdomains & Reverse Proxy: services/subdomains.md
       - Domain & SSL: services/domain-ssl.md
   - Security:
