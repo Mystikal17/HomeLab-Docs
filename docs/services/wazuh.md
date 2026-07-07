@@ -223,3 +223,125 @@ pct start 104
 - Add `wazuh.mystikal.dev` to Caddy
 
 [:material-file-pdf-box: Download session notes](../session-logs/assets/pdfs/homelab-session-2026-07-04.pdf){ .md-button }
+
+## Upgrade Notes (4.11.2 → 4.14.6)
+
+### Upgrade Order
+
+Always upgrade in this order:
+
+```bash
+apt install wazuh-indexer -y
+apt install wazuh-manager -y
+apt install wazuh-dashboard -y
+```
+
+### Post-Upgrade Checklist
+
+After every upgrade run these immediately before restarting:
+
+```bash
+# Fix dashboard cert ownership
+chown -R wazuh-dashboard:wazuh-dashboard /etc/wazuh-dashboard/certs/
+chmod 500 /etc/wazuh-dashboard/certs/
+chmod 400 /etc/wazuh-dashboard/certs/*
+
+# Fix indexer cert ownership
+chown -R wazuh-indexer:wazuh-indexer /etc/wazuh-indexer/certs/
+chmod 500 /etc/wazuh-indexer/certs/
+chmod 400 /etc/wazuh-indexer/certs/*
+
+# Restart in order
+systemctl restart wazuh-indexer
+systemctl restart wazuh-manager
+systemctl restart wazuh-dashboard
+```
+
+### IPv6/IPv4 Localhost Fix
+
+If dashboard shows `ECONNREFUSED ::1:9200` — `localhost` resolved to IPv6. Fix:
+
+```bash
+sed -i 's/opensearch.hosts: https:\/\/localhost:9200/opensearch.hosts: https:\/\/127.0.0.1:9200/' \
+  /etc/wazuh-dashboard/opensearch_dashboards.yml
+systemctl restart wazuh-dashboard
+```
+
+!!! warning
+    Always use explicit IP addresses (`127.0.0.1`) instead of `localhost` in service configs on IPv6-enabled systems.
+
+## Upgrade Reference
+
+Follow this exact sequence for any future Wazuh upgrade:
+
+```bash
+# 1. Snapshot first
+pct snapshot 104 pre-wazuh-upgrade-<date>
+
+# 2. Upgrade in order
+apt install wazuh-indexer -y
+apt install wazuh-manager -y
+apt install wazuh-dashboard -y
+
+# 3. Regenerate certs
+rm /root/wazuh-install-files.tar
+bash wazuh-install.sh -g
+tar -xvf wazuh-install-files.tar
+
+# 4. Copy dashboard certs
+cp wazuh-install-files/dashboard.pem /etc/wazuh-dashboard/certs/dashboard.pem
+cp wazuh-install-files/dashboard-key.pem /etc/wazuh-dashboard/certs/dashboard-key.pem
+cp wazuh-install-files/root-ca.pem /etc/wazuh-dashboard/certs/
+
+# 5. Copy indexer certs
+cp wazuh-install-files/node-1.pem /etc/wazuh-indexer/certs/wazuh-indexer.pem
+cp wazuh-install-files/node-1-key.pem /etc/wazuh-indexer/certs/wazuh-indexer-key.pem
+cp wazuh-install-files/root-ca.pem /etc/wazuh-indexer/certs/
+
+# 6. Fix ownership and permissions
+chown -R wazuh-dashboard:wazuh-dashboard /etc/wazuh-dashboard/certs/
+chown -R wazuh-indexer:wazuh-indexer /etc/wazuh-indexer/certs/
+chmod 500 /etc/wazuh-dashboard/certs/ /etc/wazuh-indexer/certs/
+chmod 400 /etc/wazuh-dashboard/certs/* /etc/wazuh-indexer/certs/*
+
+# 7. Reset passwords
+/usr/share/wazuh-indexer/plugins/opensearch-security/tools/wazuh-passwords-tool.sh --change-all
+# Save ALL passwords to Vaultwarden immediately
+
+# 8. Restart in order
+systemctl restart wazuh-indexer
+systemctl restart wazuh-manager
+systemctl restart wazuh-dashboard
+
+# 9. Verify indexer health
+curl -k -u admin:<password> https://localhost:9200/_cluster/health?pretty
+
+# 10. Confirm IPv4 in dashboard config
+grep opensearch.hosts /etc/wazuh-dashboard/opensearch_dashboards.yml
+# Must show 127.0.0.1 not localhost
+```
+
+!!! warning "IPv6/IPv4 Gotcha"
+    `opensearch.hosts` must use `https://127.0.0.1:9200` not `https://localhost:9200`. On Debian, `localhost` resolves to `::1` (IPv6) but the indexer only listens on `127.0.0.1` (IPv4). This causes `ECONNREFUSED ::1:9200`.
+
+## CIS Benchmark — Vaultwarden
+
+First scan results (July 4, 2026):
+
+| Result | Count |
+|---|---|
+| Passed | 70 |
+| Failed | 107 |
+| Not Applicable | 30 |
+| **Score** | **39%** |
+
+### Priority Failures
+
+| Category | Issue | Risk |
+|---|---|---|
+| Audit logging | auditd not installed | No kernel-level audit trail |
+| Password policies | libpam-pwquality missing | No complexity enforcement |
+| SSH hardening | PermitRootLogin not disabled | Brute force risk |
+| Package CVEs | 7 Critical, 52 High | Outdated packages |
+
+Hardening work planned for future session.
