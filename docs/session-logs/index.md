@@ -2,9 +2,10 @@
 
 | Date | Title | Topics | PDF |
 |---|---|---|---|
-| July 7, 2026 | Vaultwarden Hardening | Package removal (~1GB), SSH/SMTP disabled, port audit, attack surface reduction, auditd LXC limitation | [:material-file-pdf-box: Download](assets/pdfs/homelab-session-2026-07-07.pdf) |
-| July 4, 2026 (Session 2) | Wazuh Upgrade & First Agent | Manager upgrade to 4.14.6, cert/password fixes, IPv6 localhost fix, Vaultwarden agent, CIS benchmark 39% | [:material-file-pdf-box: Download](assets/pdfs/homelab-session-2026-07-04b.pdf) |
-| July 4, 2026 (Session 1) | Wazuh SIEM Deployment | Wazuh install, agent setup, version mismatch, cert fix, snapshot rollback, password reset | [:material-file-pdf-box: Download](assets/pdfs/homelab-session-2026-07-04.pdf) |
+| July 8, 2026 | Wazuh Agents & Connector | Homepage + pve1 agents, indexer SSL fix, nodes_dn, verify_hostname, Filebeat keystore | [:material-file-pdf-box: Download](assets/pdfs/homelab-session-2026-07-08.pdf) |
+| July 7, 2026 | Vaultwarden Hardening | Package removal (~1GB), SSH/SMTP disabled, port audit, attack surface reduction | [:material-file-pdf-box: Download](assets/pdfs/homelab-session-2026-07-07.pdf) |
+| July 4, 2026 (Session 2) | Wazuh Upgrade & First Agent | Manager upgrade to 4.14.6, cert/password fixes, IPv6 localhost fix, CIS benchmark 39% | [:material-file-pdf-box: Download](assets/pdfs/homelab-session-2026-07-04b.pdf) |
+| July 4, 2026 (Session 1) | Wazuh SIEM Deployment | Wazuh install, agent setup, version mismatch, cert fix, snapshot rollback | [:material-file-pdf-box: Download](assets/pdfs/homelab-session-2026-07-04.pdf) |
 | June 25, 2026 | Homelab Hardening | Vaultwarden 2FA, Proxmox non-root user, Cloudflare token rotation, UniFi CORS fix | [:material-file-pdf-box: Download](assets/pdfs/homelab-session-2026-06-25.pdf) |
 
 !!! tip
