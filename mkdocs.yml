@@ -29,6 +29,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Network:
+      - Overview: network/overview.md
       - VLAN Architecture: network/vlans.md
       - OPNsense: network/opnsense.md
       - Dynamic DNS: network/ddns.md

@@ -135,4 +135,4 @@ These files live in the `uosserver_data` podman volume and persist through conta
 
 ---
 
-[:material-file-pdf-box: Download full session notes](../session-logs/assets/homelab-session-2026-06-25.pdf){ .md-button }
+[:material-file-pdf-box: Download full session notes](../session-logs/assets/pdfs/homelab-session-2026-06-25.pdf){ .md-button }
