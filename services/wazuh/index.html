@@ -1,0 +1,2542 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mystikal17.github.io/HomeLab-Docs/services/wazuh/">
+      
+      
+        <link rel="prev" href="../monitoring/">
+      
+      
+        <link rel="next" href="../subdomains/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Wazuh SIEM - Frank's Homelab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wazuh-siem" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Frank&#39;s Homelab" class="md-header__button md-logo" aria-label="Frank's Homelab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Frank's Homelab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Wazuh SIEM
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../network/overview/" class="md-tabs__link">
+          
+  
+  
+  Network
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../infra/hardware/" class="md-tabs__link">
+          
+  
+  
+  Infrastructure
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Services
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../security/wan-hardening/" class="md-tabs__link">
+          
+  
+  
+  Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../vpn/wireguard/" class="md-tabs__link">
+          
+  
+  
+  VPN
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../session-logs/" class="md-tabs__link">
+          
+  
+  
+  Session Logs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../meta/site/" class="md-tabs__link">
+          
+  
+  
+  Meta
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Frank&#39;s Homelab" class="md-nav__button md-logo" aria-label="Frank's Homelab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Frank's Homelab
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Network
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../network/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../network/vlans/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VLAN Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../network/opnsense/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPNsense
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../network/ddns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dynamic DNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../network/printer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Printer VLAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Infrastructure
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infra/hardware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infra/proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proxmox Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Services
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vaultwarden/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vaultwarden
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../homepage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Homepage Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uptime Kuma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wazuh SIEM
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wazuh SIEM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-vs-syslog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent vs Syslog
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lxc-specs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LXC Specs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        config.yml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vaultwarden-ct102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vaultwarden (CT102)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-coverage-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Coverage Plan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-issues-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Issues &amp; Fixes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Known Issues &amp; Fixes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version Mismatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashboard-cert-permission-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboard Cert Permission Error
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password Reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snapshot-before-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snapshot Before Upgrades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Lessons Learned
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrade-notes-4112-4146" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrade Notes (4.11.2 → 4.14.6)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Upgrade Notes (4.11.2 → 4.14.6)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upgrade-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrade Order
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-upgrade-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-Upgrade Checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6ipv4-localhost-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPv6/IPv4 Localhost Fix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrade-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrade Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cis-benchmark-vaultwarden" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CIS Benchmark — Vaultwarden
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CIS Benchmark — Vaultwarden">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#priority-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority Failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../subdomains/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subdomains & Reverse Proxy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../domain-ssl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain & SSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/wan-hardening/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WAN Hardening
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/hardening-2fa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Homelab Hardening (2FA + Tokens)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPN
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    VPN
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vpn/wireguard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WireGuard Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vpn/macbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MacBook Peer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Session Logs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Session Logs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../session-logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All Sessions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meta
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Meta
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meta/site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About this site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-vs-syslog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent vs Syslog
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lxc-specs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LXC Specs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        config.yml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vaultwarden-ct102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vaultwarden (CT102)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-coverage-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Coverage Plan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-issues-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Issues &amp; Fixes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Known Issues &amp; Fixes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version Mismatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashboard-cert-permission-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboard Cert Permission Error
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password Reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snapshot-before-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snapshot Before Upgrades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Lessons Learned
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrade-notes-4112-4146" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrade Notes (4.11.2 → 4.14.6)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Upgrade Notes (4.11.2 → 4.14.6)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upgrade-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrade Order
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-upgrade-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-Upgrade Checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6ipv4-localhost-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPv6/IPv4 Localhost Fix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrade-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrade Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cis-benchmark-vaultwarden" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CIS Benchmark — Vaultwarden
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CIS Benchmark — Vaultwarden">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#priority-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority Failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="wazuh-siem">Wazuh SIEM</h1>
+<p><em>Last updated: July 4, 2026</em></p>
+<h2 id="overview">Overview</h2>
+<p>Wazuh is an open source SIEM (Security Information and Event Management) platform. It collects logs from all homelab systems, analyzes them in real time, and alerts on suspicious activity.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>URL</td>
+<td>https://192.168.10.71 (wazuh.mystikal.dev — pending)</td>
+</tr>
+<tr>
+<td>LXC</td>
+<td>CT 104 (wazuh)</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>192.168.10.71</td>
+</tr>
+<tr>
+<td>VLAN</td>
+<td>Servers (10)</td>
+</tr>
+<tr>
+<td>Version</td>
+<td>4.11.2</td>
+</tr>
+<tr>
+<td>Install type</td>
+<td>All-in-one</td>
+</tr>
+</tbody>
+</table>
+<h2 id="architecture">Architecture</h2>
+<p>Three components run on a single LXC:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Purpose</th>
+<th>Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wazuh Manager</td>
+<td>Receives and analyzes logs from agents</td>
+<td>1514 (agents), 1515 (registration)</td>
+</tr>
+<tr>
+<td>Wazuh Indexer</td>
+<td>Stores log data (OpenSearch/Java)</td>
+<td>9200 (localhost only)</td>
+</tr>
+<tr>
+<td>Wazuh Dashboard</td>
+<td>Web UI for alerts and events</td>
+<td>443</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-vs-syslog">Agent vs Syslog</h3>
+<p><strong>Agent</strong> — installed directly on Linux machines. Provides deep visibility: process monitoring, file integrity, active response. Used on LXC containers.</p>
+<p><strong>Syslog</strong> — network log forwarding protocol. Used for devices that can't run an agent like OPNsense (FreeBSD). Less visibility than an agent but better than nothing.</p>
+<h2 id="lxc-specs">LXC Specs</h2>
+<div class="highlight"><pre><span></span><code>pct<span class="w"> </span>create<span class="w"> </span><span class="m">104</span><span class="w"> </span>local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hostname<span class="w"> </span>wazuh<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--storage<span class="w"> </span>local-lvm<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--rootfs<span class="w"> </span>local-lvm:50<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--memory<span class="w"> </span><span class="m">8192</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--net0<span class="w"> </span><span class="nv">name</span><span class="o">=</span>eth0,bridge<span class="o">=</span>vmbr0,ip<span class="o">=</span><span class="m">192</span>.168.10.71/24,gw<span class="o">=</span><span class="m">192</span>.168.10.1,tag<span class="o">=</span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--unprivileged<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--features<span class="w"> </span><span class="nv">nesting</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--start<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>--unprivileged 0</code> creates a <strong>privileged</strong> container. Required for Wazuh indexer (OpenSearch) which needs low-level system access.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Why Servers VLAN</p>
+<p>Wazuh is a service/workload, not management infrastructure. Servers VLAN limits blast radius — if compromised, attacker is isolated from Proxmox and OPNsense on Management VLAN.</p>
+</div>
+<h2 id="installation">Installation</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Download installer and config</span>
+curl<span class="w"> </span>-sO<span class="w"> </span>https://packages.wazuh.com/4.11/wazuh-install.sh
+curl<span class="w"> </span>-sO<span class="w"> </span>https://packages.wazuh.com/4.11/config.yml
+
+<span class="c1"># Edit config.yml — set all three IPs to 192.168.10.71</span>
+nano<span class="w"> </span>config.yml
+
+<span class="c1"># Run all-in-one install</span>
+apt<span class="w"> </span>install<span class="w"> </span>sudo<span class="w"> </span>-y
+bash<span class="w"> </span>wazuh-install.sh<span class="w"> </span>-a
+</code></pre></div>
+<h3 id="configyml">config.yml</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">nodes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">indexer</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node-1</span>
+<span class="w">      </span><span class="nt">ip</span><span class="p">:</span><span class="w"> </span><span class="s">"192.168.10.71"</span>
+<span class="w">  </span><span class="nt">server</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wazuh-1</span>
+<span class="w">      </span><span class="nt">ip</span><span class="p">:</span><span class="w"> </span><span class="s">"192.168.10.71"</span>
+<span class="w">  </span><span class="nt">dashboard</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dashboard</span>
+<span class="w">      </span><span class="nt">ip</span><span class="p">:</span><span class="w"> </span><span class="s">"192.168.10.71"</span>
+</code></pre></div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Save the generated admin credentials to Vaultwarden <strong>immediately</strong> before doing anything else.</p>
+</div>
+<h2 id="verify-installation">Verify Installation</h2>
+<div class="highlight"><pre><span></span><code>systemctl<span class="w"> </span>status<span class="w"> </span>wazuh-manager
+systemctl<span class="w"> </span>status<span class="w"> </span>wazuh-indexer
+systemctl<span class="w"> </span>status<span class="w"> </span>wazuh-dashboard
+
+<span class="c1"># Check ports</span>
+ss<span class="w"> </span>-tlnp<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">"443|9200|1514|1515"</span>
+</code></pre></div>
+<p>Expected ports:</p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Process</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>443</td>
+<td>node (dashboard)</td>
+<td>Web UI</td>
+</tr>
+<tr>
+<td>1514</td>
+<td>wazuh-remoted</td>
+<td>Agent ingestion</td>
+</tr>
+<tr>
+<td>1515</td>
+<td>wazuh-authd</td>
+<td>Agent registration</td>
+</tr>
+<tr>
+<td>9200</td>
+<td>java (indexer)</td>
+<td>Localhost only — correct by design</td>
+</tr>
+</tbody>
+</table>
+<h2 id="agent-installation">Agent Installation</h2>
+<h3 id="vaultwarden-ct102">Vaultwarden (CT102)</h3>
+<div class="highlight"><pre><span></span><code>pct<span class="w"> </span>enter<span class="w"> </span><span class="m">102</span>
+
+<span class="c1"># Add Wazuh repo with GPG verification</span>
+curl<span class="w"> </span>-s<span class="w"> </span>https://packages.wazuh.com/key/GPG-KEY-WAZUH<span class="w"> </span><span class="p">|</span><span class="w"> </span>gpg<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--no-default-keyring<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--keyring<span class="w"> </span>gnupg-ring:/usr/share/keyrings/wazuh.gpg<span class="w"> </span>--import
+chmod<span class="w"> </span><span class="m">644</span><span class="w"> </span>/usr/share/keyrings/wazuh.gpg
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"deb [signed-by=/usr/share/keyrings/wazuh.gpg] \</span>
+<span class="s2">  https://packages.wazuh.com/4.x/apt/ stable main"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/wazuh.list
+
+apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>wazuh-agent<span class="w"> </span>-y
+</code></pre></div>
+<p>Configure manager IP in <code>/var/ossec/etc/ossec.conf</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;client&gt;</span>
+<span class="w">  </span><span class="nt">&lt;server&gt;</span>
+<span class="w">    </span><span class="nt">&lt;address&gt;</span>192.168.10.71<span class="nt">&lt;/address&gt;</span>
+<span class="w">    </span><span class="nt">&lt;port&gt;</span>1514<span class="nt">&lt;/port&gt;</span>
+<span class="w">    </span><span class="nt">&lt;protocol&gt;</span>tcp<span class="nt">&lt;/protocol&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/server&gt;</span>
+<span class="nt">&lt;/client&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>wazuh-agent
+systemctl<span class="w"> </span>start<span class="w"> </span>wazuh-agent
+</code></pre></div>
+<h2 id="agent-coverage-plan">Agent Coverage Plan</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Method</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CT102 Vaultwarden</td>
+<td>Agent</td>
+<td>Installed — pending version fix</td>
+</tr>
+<tr>
+<td>CT103 Homepage</td>
+<td>Agent</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>pve1 Proxmox host</td>
+<td>Agent</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>OPNsense</td>
+<td>Syslog → port 1514</td>
+<td>Pending</td>
+</tr>
+</tbody>
+</table>
+<h2 id="known-issues-fixes">Known Issues &amp; Fixes</h2>
+<h3 id="version-mismatch">Version Mismatch</h3>
+<p>Agent version must be &lt;= manager version. If agent is newer:</p>
+<div class="highlight"><pre><span></span><code>ERROR: Agent version must be lower or equal to manager version
+</code></pre></div>
+<p><strong>Fix:</strong> Upgrade the manager following official Wazuh upgrade docs. Never downgrade agents.</p>
+<h3 id="dashboard-cert-permission-error">Dashboard Cert Permission Error</h3>
+<p>After upgrade or cert regeneration:</p>
+<div class="highlight"><pre><span></span><code>EACCES: permission denied, open '/etc/wazuh-dashboard/certs/dashboard-key.pem'
+</code></pre></div>
+<p><strong>Fix:</strong>
+<div class="highlight"><pre><span></span><code>chown<span class="w"> </span>-R<span class="w"> </span>wazuh-dashboard:wazuh-dashboard<span class="w"> </span>/etc/wazuh-dashboard/certs/
+chmod<span class="w"> </span><span class="m">500</span><span class="w"> </span>/etc/wazuh-dashboard/certs/
+chmod<span class="w"> </span><span class="m">400</span><span class="w"> </span>/etc/wazuh-dashboard/certs/*
+systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-dashboard
+</code></pre></div></p>
+<h3 id="password-reset">Password Reset</h3>
+<p>If admin password is lost or mismatched after upgrade:</p>
+<div class="highlight"><pre><span></span><code>/usr/share/wazuh-indexer/plugins/opensearch-security/tools/wazuh-passwords-tool.sh<span class="w"> </span>--change-all
+systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-indexer<span class="w"> </span>wazuh-manager<span class="w"> </span>wazuh-dashboard
+</code></pre></div>
+<p>Save all generated passwords to Vaultwarden immediately.</p>
+<h2 id="snapshot-before-upgrades">Snapshot Before Upgrades</h2>
+<p>Always snapshot CT104 before any major changes:</p>
+<div class="highlight"><pre><span></span><code>pct<span class="w"> </span>snapshot<span class="w"> </span><span class="m">104</span><span class="w"> </span>pre-wazuh-upgrade<span class="w"> </span>--description<span class="w"> </span><span class="s2">"Before Wazuh upgrade"</span>
+</code></pre></div>
+<p>Rollback if needed:</p>
+<div class="highlight"><pre><span></span><code>pct<span class="w"> </span>stop<span class="w"> </span><span class="m">104</span>
+pct<span class="w"> </span>rollback<span class="w"> </span><span class="m">104</span><span class="w"> </span>pre-wazuh-upgrade
+pct<span class="w"> </span>start<span class="w"> </span><span class="m">104</span>
+</code></pre></div>
+<h2 id="key-lessons-learned">Key Lessons Learned</h2>
+<ul>
+<li>Save credentials to Vaultwarden immediately — never overwrite without confirming old ones still work</li>
+<li>Snapshot before every major change</li>
+<li>Read logs before touching anything — <code>journalctl -u wazuh-dashboard</code> and <code>ss -tlnp</code> diagnose most issues</li>
+<li>Upgrade manager not agents</li>
+<li>EACCES means wrong ownership — check <code>chown</code> and <code>chmod</code> first</li>
+</ul>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li>Upgrade manager to 4.14.x using official upgrade guide</li>
+<li>Register Vaultwarden agent</li>
+<li>Install agents on CT103 and pve1</li>
+<li>Configure OPNsense syslog</li>
+<li>Add <code>wazuh.mystikal.dev</code> to Caddy</li>
+</ul>
+<p><a class="md-button" href="../../session-logs/assets/pdfs/homelab-session-2026-07-04.pdf"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-9.5 8.5c0 .8-.7 1.5-1.5 1.5H7v2H5.5V9H8c.8 0 1.5.7 1.5 1.5zm5 2c0 .8-.7 1.5-1.5 1.5h-2.5V9H13c.8 0 1.5.7 1.5 1.5zm4-3H17v1h1.5V13H17v2h-1.5V9h3zm-6.5 0h1v3h-1zm-5 0h1v1H7z"/></svg></span> Download session notes</a></p>
+<h2 id="upgrade-notes-4112-4146">Upgrade Notes (4.11.2 → 4.14.6)</h2>
+<h3 id="upgrade-order">Upgrade Order</h3>
+<p>Always upgrade in this order:</p>
+<div class="highlight"><pre><span></span><code>apt<span class="w"> </span>install<span class="w"> </span>wazuh-indexer<span class="w"> </span>-y
+apt<span class="w"> </span>install<span class="w"> </span>wazuh-manager<span class="w"> </span>-y
+apt<span class="w"> </span>install<span class="w"> </span>wazuh-dashboard<span class="w"> </span>-y
+</code></pre></div>
+<h3 id="post-upgrade-checklist">Post-Upgrade Checklist</h3>
+<p>After every upgrade run these immediately before restarting:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Fix dashboard cert ownership</span>
+chown<span class="w"> </span>-R<span class="w"> </span>wazuh-dashboard:wazuh-dashboard<span class="w"> </span>/etc/wazuh-dashboard/certs/
+chmod<span class="w"> </span><span class="m">500</span><span class="w"> </span>/etc/wazuh-dashboard/certs/
+chmod<span class="w"> </span><span class="m">400</span><span class="w"> </span>/etc/wazuh-dashboard/certs/*
+
+<span class="c1"># Fix indexer cert ownership</span>
+chown<span class="w"> </span>-R<span class="w"> </span>wazuh-indexer:wazuh-indexer<span class="w"> </span>/etc/wazuh-indexer/certs/
+chmod<span class="w"> </span><span class="m">500</span><span class="w"> </span>/etc/wazuh-indexer/certs/
+chmod<span class="w"> </span><span class="m">400</span><span class="w"> </span>/etc/wazuh-indexer/certs/*
+
+<span class="c1"># Restart in order</span>
+systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-indexer
+systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-manager
+systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-dashboard
+</code></pre></div>
+<h3 id="ipv6ipv4-localhost-fix">IPv6/IPv4 Localhost Fix</h3>
+<p>If dashboard shows <code>ECONNREFUSED ::1:9200</code> — <code>localhost</code> resolved to IPv6. Fix:</p>
+<div class="highlight"><pre><span></span><code>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">'s/opensearch.hosts: https:\/\/localhost:9200/opensearch.hosts: https:\/\/127.0.0.1:9200/'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>/etc/wazuh-dashboard/opensearch_dashboards.yml
+systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-dashboard
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Always use explicit IP addresses (<code>127.0.0.1</code>) instead of <code>localhost</code> in service configs on IPv6-enabled systems.</p>
+</div>
+<h2 id="upgrade-reference">Upgrade Reference</h2>
+<p>Follow this exact sequence for any future Wazuh upgrade:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. Snapshot first</span>
+pct<span class="w"> </span>snapshot<span class="w"> </span><span class="m">104</span><span class="w"> </span>pre-wazuh-upgrade-&lt;date&gt;
+
+<span class="c1"># 2. Upgrade in order</span>
+apt<span class="w"> </span>install<span class="w"> </span>wazuh-indexer<span class="w"> </span>-y
+apt<span class="w"> </span>install<span class="w"> </span>wazuh-manager<span class="w"> </span>-y
+apt<span class="w"> </span>install<span class="w"> </span>wazuh-dashboard<span class="w"> </span>-y
+
+<span class="c1"># 3. Regenerate certs</span>
+rm<span class="w"> </span>/root/wazuh-install-files.tar
+bash<span class="w"> </span>wazuh-install.sh<span class="w"> </span>-g
+tar<span class="w"> </span>-xvf<span class="w"> </span>wazuh-install-files.tar
+
+<span class="c1"># 4. Copy dashboard certs</span>
+cp<span class="w"> </span>wazuh-install-files/dashboard.pem<span class="w"> </span>/etc/wazuh-dashboard/certs/dashboard.pem
+cp<span class="w"> </span>wazuh-install-files/dashboard-key.pem<span class="w"> </span>/etc/wazuh-dashboard/certs/dashboard-key.pem
+cp<span class="w"> </span>wazuh-install-files/root-ca.pem<span class="w"> </span>/etc/wazuh-dashboard/certs/
+
+<span class="c1"># 5. Copy indexer certs</span>
+cp<span class="w"> </span>wazuh-install-files/node-1.pem<span class="w"> </span>/etc/wazuh-indexer/certs/wazuh-indexer.pem
+cp<span class="w"> </span>wazuh-install-files/node-1-key.pem<span class="w"> </span>/etc/wazuh-indexer/certs/wazuh-indexer-key.pem
+cp<span class="w"> </span>wazuh-install-files/root-ca.pem<span class="w"> </span>/etc/wazuh-indexer/certs/
+
+<span class="c1"># 6. Fix ownership and permissions</span>
+chown<span class="w"> </span>-R<span class="w"> </span>wazuh-dashboard:wazuh-dashboard<span class="w"> </span>/etc/wazuh-dashboard/certs/
+chown<span class="w"> </span>-R<span class="w"> </span>wazuh-indexer:wazuh-indexer<span class="w"> </span>/etc/wazuh-indexer/certs/
+chmod<span class="w"> </span><span class="m">500</span><span class="w"> </span>/etc/wazuh-dashboard/certs/<span class="w"> </span>/etc/wazuh-indexer/certs/
+chmod<span class="w"> </span><span class="m">400</span><span class="w"> </span>/etc/wazuh-dashboard/certs/*<span class="w"> </span>/etc/wazuh-indexer/certs/*
+
+<span class="c1"># 7. Reset passwords</span>
+/usr/share/wazuh-indexer/plugins/opensearch-security/tools/wazuh-passwords-tool.sh<span class="w"> </span>--change-all
+<span class="c1"># Save ALL passwords to Vaultwarden immediately</span>
+
+<span class="c1"># 8. Restart in order</span>
+systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-indexer
+systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-manager
+systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-dashboard
+
+<span class="c1"># 9. Verify indexer health</span>
+curl<span class="w"> </span>-k<span class="w"> </span>-u<span class="w"> </span>admin:&lt;password&gt;<span class="w"> </span>https://localhost:9200/_cluster/health?pretty
+
+<span class="c1"># 10. Confirm IPv4 in dashboard config</span>
+grep<span class="w"> </span>opensearch.hosts<span class="w"> </span>/etc/wazuh-dashboard/opensearch_dashboards.yml
+<span class="c1"># Must show 127.0.0.1 not localhost</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">IPv6/IPv4 Gotcha</p>
+<p><code>opensearch.hosts</code> must use <code>https://127.0.0.1:9200</code> not <code>https://localhost:9200</code>. On Debian, <code>localhost</code> resolves to <code>::1</code> (IPv6) but the indexer only listens on <code>127.0.0.1</code> (IPv4). This causes <code>ECONNREFUSED ::1:9200</code>.</p>
+</div>
+<h2 id="cis-benchmark-vaultwarden">CIS Benchmark — Vaultwarden</h2>
+<p>First scan results (July 4, 2026):</p>
+<table>
+<thead>
+<tr>
+<th>Result</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Passed</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Failed</td>
+<td>107</td>
+</tr>
+<tr>
+<td>Not Applicable</td>
+<td>30</td>
+</tr>
+<tr>
+<td><strong>Score</strong></td>
+<td><strong>39%</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="priority-failures">Priority Failures</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Issue</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Audit logging</td>
+<td>auditd not installed</td>
+<td>No kernel-level audit trail</td>
+</tr>
+<tr>
+<td>Password policies</td>
+<td>libpam-pwquality missing</td>
+<td>No complexity enforcement</td>
+</tr>
+<tr>
+<td>SSH hardening</td>
+<td>PermitRootLogin not disabled</td>
+<td>Brute force risk</td>
+</tr>
+<tr>
+<td>Package CVEs</td>
+<td>7 Critical, 52 High</td>
+<td>Outdated packages</td>
+</tr>
+</tbody>
+</table>
+<p>Hardening work planned for future session.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
